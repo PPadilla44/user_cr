@@ -5,7 +5,6 @@ app = Flask(__name__)
 def index():
     mysql = connectToMySQL('users_schema')	        # call the function, passing in the name of our db
     users = mysql.query_db('SELECT * FROM users;')  # call the query_db function, pass in the query as a string
-    print(users)
     return render_template("read_all.html", all_users = users)
 
 @app.route("/create")
@@ -23,5 +22,42 @@ def create_user():
     db.query_db(query, data)
     return redirect("/")
 
+@app.route("/show_one/<userid>")
+def show_one(userid):
+    query = "SELECT * FROM users WHERE id = %(id)s;"
+    data = {'id' : userid}
+    db = connectToMySQL('users_schema')
+    info = db.query_db(query, data)
+    return render_template("show_one.html", user = info)
+
+@app.route("/delete/<userid>")
+def delete_one(userid):
+    query = "DELETE FROM users WHERE id = %(id)s;"
+    data = {'id' : userid}
+    db = connectToMySQL('users_schema')
+    db.query_db(query, data)
+    return redirect('/')
+
+@app.route("/edit/<userid>")
+def show_edit(userid):
+    query = "SELECT * FROM users WHERE id = %(id)s;"
+    data = {'id' : userid}
+    db = connectToMySQL('users_schema')
+    info = db.query_db(query, data)
+    return render_template('edit.html', user = info)
+
+@app.route("/edit/submit/<userid>", methods=['POST'])
+def submit_edit(userid):
+    query = "UPDATE users SET first_name = %(fn)s, last_name = %(ln)s, email = %(em)s, updated_at = NOW() WHERE id = %(id)s;"
+    data = {
+        'fn' : request.form['fname'],
+        'ln' : request.form['lname'],
+        'em' : request.form['email'],
+        'id' : userid,
+    }
+    print(query)
+    db = connectToMySQL('users_schema')
+    db.query_db(query, data)
+    return redirect("/")
 if __name__ == "__main__":
     app.run(debug=True)

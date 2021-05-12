@@ -17,6 +17,7 @@
                     <th>Full Name</th>
                     <th>Email</th>
                     <th>Created At</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody class="table-secondary">
@@ -25,7 +26,8 @@
                         <td>{{user["id"]}}</td>
                         <td>{{user["first_name"] + ' ' + user["last_name"]}}</td>
                         <td>{{user["email"]}}</td>
-                        <td>{{user["created_at"]}}</td>
+                        <td>{{user["created_at"].strftime('%b %d, %Y at %I:%M %p')}}</td>
+                        <td><a href="/show_one/{{user['id']}}">Show</a> | <a href="/edit/{{user['id']}}">Edit</a> | <a href="/delete/{{user['id']}}">Delete</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
