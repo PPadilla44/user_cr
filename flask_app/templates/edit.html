@@ -9,7 +9,6 @@
 </head>
 <body>
     <div class="container mt-5">
-        {% for user in user %}
         <div class="d-flex justify-content-between align-items-center">
             <h1>Edit User {{user['id']}}</h1>
             <a href="/">Home</a>
@@ -24,7 +23,6 @@
             <br>
             <button type="submit" class="btn btn-primary mt-5">Update</button>
         </form>
-        {% endfor %}
     </div>
 </body>
 </html>
